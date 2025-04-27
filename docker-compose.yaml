@@ -1,0 +1,40 @@
+version: '3'
+services:
+  postgres:
+    image: postgis/postgis:14-master
+    # Required when running on platform other than amd64, like Apple M1/M2:
+    # platform: linux/amd64
+    volumes:
+      - ./.docker-data/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+
+  redis:
+    image: redis:7
+
+  medusa: 
+    build:
+      context: ./medusa
+      dockerfile: Dockerfile
+
+    image: backend:dev
+    container_name: medusa-dev
+
+    environment:
+      MEDUSA_ADMIN_ONBOARDING_TYPE: default
+      STORE_CORS: ${MEDUSA_STORE_CORS}
+      ADMIN_CORS: ${MEDUSA_ADMIN_CORS}
+      AUTH_CORS: ${MEDUSA_AUTH_CORS}
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: supersecret
+      COOKIE_SECRET: supersecret
+      DATABASE_URL: postgres://medusa:medusa@postgres/medusa-medusa
+
+    ports:
+      - 9000:9000
+    depends_on:
+      - postgres
+      - redis
