@@ -57,10 +57,10 @@ RUN yarn install --production
 
 
 # RUN medusa migrations run 
-COPY entrypoint.sh /app/medusa/entrypoint.sh
-RUN chmod +x /app/medusa/entrypoint.sh
-RUN /app/medusa/entrypoint.sh
+COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
+RUN chmod +x /app/medusa/.medusa/server/migrations.sh
+RUN /app/medusa/.medusa/server/migrations.sh
 
-
+RUN rm /app/medusa/.medusa/server/migrations.sh
 
 CMD ["yarn", "run", "start"]
