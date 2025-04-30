@@ -16,16 +16,16 @@ RUN yarn run build
 FROM node:23
 
 # Bug https://github.com/coollabsio/coolify/issues/1930
-ARG COOKIE_SECRET=$COOKIE_SECRET
-ARG JWT_SECRET=$JWT_SECRET
-ARG STORE_CORS=$STORE_CORS
-ARG ADMIN_CORS=$ADMIN_CORS
-ARG AUTH_CORS=$AUTH_CORS
-ARG DISABLE_MEDUSA_ADMIN=$DISABLE_MEDUSA_ADMIN
-ARG WORKER_MODE=$WORKER_MODE
-ARG PORT=$PORT
-ARG DATABASE_URL=$DATABASE_URL
-ARG REDIS_URL=$REDIS_URL
+ENV COOKIE_SECRET=$COOKIE_SECRET
+ENV JWT_SECRET=$JWT_SECRET
+ENV STORE_CORS=$STORE_CORS
+ENV ADMIN_CORS=$ADMIN_CORS
+ENV AUTH_CORS=$AUTH_CORS
+ENV DISABLE_MEDUSA_ADMIN=$DISABLE_MEDUSA_ADMIN
+ENV WORKER_MODE=$WORKER_MODE
+ENV PORT=$PORT
+ENV DATABASE_URL=$DATABASE_URL
+ENV REDIS_URL=$REDIS_URL
 
 
 WORKDIR /app/medusa
@@ -49,10 +49,12 @@ RUN yarn install --production
 
 
 # RUN medusa migrations run 
-COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
-RUN chmod +x /app/medusa/.medusa/server/migrations.sh
-RUN /app/medusa/.medusa/server/migrations.sh
+# COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
+# RUN chmod +x /app/medusa/.medusa/server/migrations.sh
+# RUN /app/medusa/.medusa/server/migrations.sh
 
-RUN rm /app/medusa/.medusa/server/migrations.sh
+# RUN rm /app/medusa/.medusa/server/migrations.sh
+
+RUN yarn run predeploy 
 
 CMD ["yarn", "run", "start"]
