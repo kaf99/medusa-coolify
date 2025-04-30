@@ -14,27 +14,3 @@ services:
 
   redis:
     image: redis:7
-
-  medusa: 
-    build:
-      context: ./medusa
-      dockerfile: Dockerfile
-
-    image: backend:dev
-    container_name: medusa-dev
-
-    environment:
-      MEDUSA_ADMIN_ONBOARDING_TYPE: default
-      STORE_CORS: ${MEDUSA_STORE_CORS}
-      ADMIN_CORS: ${MEDUSA_ADMIN_CORS}
-      AUTH_CORS: ${MEDUSA_AUTH_CORS}
-      REDIS_URL: redis://redis:6379
-      JWT_SECRET: supersecret
-      COOKIE_SECRET: supersecret
-      DATABASE_URL: postgres://medusa:medusa@postgres/medusa-medusa
-
-    ports:
-      - 9000:9000
-    depends_on:
-      - postgres
-      - redis
