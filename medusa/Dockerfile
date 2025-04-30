@@ -28,6 +28,8 @@ ENV DATABASE_URL=$DATABASE_URL
 ENV REDIS_URL=$REDIS_URL
 
 
+RUN echo "${PORT}"
+
 WORKDIR /app/medusa
 
 RUN mkdir .medusa
