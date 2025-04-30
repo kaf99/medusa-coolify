@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgis/postgis:14-master
+    image: postgis/postgis:16-master
     # Required when running on platform other than amd64, like Apple M1/M2:
     # platform: linux/amd64
     volumes:
