@@ -51,12 +51,10 @@ RUN yarn install --production
 
 
 # RUN medusa migrations run 
-# COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
-# RUN chmod +x /app/medusa/.medusa/server/migrations.sh
-# RUN /app/medusa/.medusa/server/migrations.sh
+COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
+RUN chmod +x /app/medusa/.medusa/server/migrations.sh
+RUN /app/medusa/.medusa/server/migrations.sh
 
-# RUN rm /app/medusa/.medusa/server/migrations.sh
-
-RUN yarn run predeploy 
+RUN rm /app/medusa/.medusa/server/migrations.sh
 
 CMD ["yarn", "run", "start"]
