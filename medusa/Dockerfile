@@ -59,7 +59,7 @@ RUN yarn install --production
 # RUN medusa migrations run 
 COPY entrypoint.sh /app/medusa/entrypoint.sh
 RUN chmod +x /app/medusa/entrypoint.sh
-ENTRYPOINT ["/app/medusa/entrypoint.sh"] 
+RUN /app/medusa/entrypoint.sh
 
 
 
