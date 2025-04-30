@@ -26,7 +26,7 @@ ARG WORKER_MODE
 ARG PORT
 ARG DATABASE_URL
 ARG REDIS_URL
-
+ARG BACKEND_URL
 
 RUN echo "${PORT}"
 
@@ -44,8 +44,6 @@ RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
 COPY --from=builder /app/medusa/.medusa ./.medusa
 
 WORKDIR /app/medusa/.medusa/server
-
-RUN yarn global add @medusajs/medusa-cli@latest
 
 RUN yarn install --production
 
