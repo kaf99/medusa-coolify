@@ -1,5 +1,5 @@
 # Use GitHub Node images to bypass Docker Hub
-FROM ghcr.io/nodejs/node:20 as builder
+FROM node:20 as builder
 WORKDIR /app/medusa
 
 COPY . .
@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
 RUN yarn install --loglevel=error
 RUN yarn run build
 
-FROM ghcr.io/nodejs/node:20
+FROM node:20
 
 # Bug https://github.com/coollabsio/coolify/issues/1930
 ARG COOKIE_SECRET
