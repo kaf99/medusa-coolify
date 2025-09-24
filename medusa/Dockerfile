@@ -1,19 +1,14 @@
-FROM node:20 as builder
-
+# Use GitHub Node images to bypass Docker Hub
+FROM ghcr.io/nodejs/node:20 as builder
 WORKDIR /app/medusa
 
-COPY . . 
-
+COPY . .
 RUN rm -rf node_modules
-
 RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
-
 RUN yarn install --loglevel=error
-
 RUN yarn run build
 
-
-FROM node:20
+FROM ghcr.io/nodejs/node:20
 
 # Bug https://github.com/coollabsio/coolify/issues/1930
 ARG COOKIE_SECRET
@@ -31,28 +26,17 @@ ARG BACKEND_URL
 RUN echo "${PORT}"
 
 WORKDIR /app/medusa
-
 RUN mkdir .medusa
-
-# COPY package*.json .yarnrc.yml yarn.lock ./ 
-
-# COPY medusa-config.ts .
-# COPY tsconfig.json .
-
 RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
 
 COPY --from=builder /app/medusa/.medusa ./.medusa
 
 WORKDIR /app/medusa/.medusa/server
-
 RUN yarn install --production
 
-
-# RUN medusa migrations run 
 COPY migrations.sh /app/medusa/.medusa/server/migrations.sh
 RUN chmod +x /app/medusa/.medusa/server/migrations.sh
 RUN /app/medusa/.medusa/server/migrations.sh
-
 RUN rm /app/medusa/.medusa/server/migrations.sh
 
 CMD ["yarn", "run", "start"]
